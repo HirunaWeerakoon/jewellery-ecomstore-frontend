@@ -61,7 +61,7 @@
       border-radius: 6px;
       font-size: 14px;
       outline: none;
-      display: none; /* hidden initially */
+      display: inline-block; /* visible by default */
     }
 
     /* Cart icon */
@@ -77,23 +77,16 @@
   <header class="site-header">
     <nav class="nav site-nav">
       <div class="nav-left">
-        <a href="#" class="nav-link">New In</a>
-        <a href="#" class="nav-link">Jewellery</a>
-        <a href="#" class="nav-link">Celebrity</a>
+        <a href="index.html" class="nav-link" aria-label="Go home">Home</a>
+        <a href="catalog.html" class="nav-link" aria-current="page">Catalog</a>
         <a href="#" class="nav-link">About</a>
       </div>
 
-      <a href="#" class="brand">ASHADI</a>
+      <a href="index.html" class="brand" aria-label="Go home">ASHADI</a>
 
       <div class="nav-right">
-        <!-- Search Icon -->
-        <img src="images/search-icon.png" alt="Search" class="nav-search-icon" />
-
-        <!-- Search input (hidden initially) -->
         <input type="text" placeholder="Search..." class="nav-search-bar" />
-
-        <!-- Gold Cart Icon -->
-        <img src="images/cart.png" alt="Cart" class="nav-cart" />
+        <a href="checkout.html" class="nav-filter-btn" style="text-decoration:none;">Checkout</a>
       </div>
     </nav>
   </header>
@@ -102,7 +95,7 @@
     <section class="product-grid">
       <!-- Standardised product card markup - repeatable -->
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_1.png" alt="Golden Elegance Necklace" />
             <div class="overlay" aria-hidden="true">
@@ -114,7 +107,7 @@
       </div>
 
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_2.png" alt="Diamond Ring" />
             <div class="overlay" aria-hidden="true">
@@ -126,7 +119,7 @@
       </div>
 
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_3.png" alt="Pearl Earrings" />
             <div class="overlay" aria-hidden="true">
@@ -138,7 +131,7 @@
       </div>
 
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_4.png" alt="Luxury Bracelet" />
             <div class="overlay" aria-hidden="true">
@@ -150,7 +143,7 @@
       </div>
 
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_3.png" alt="Rose Gold Pendant" />
             <div class="overlay" aria-hidden="true">
@@ -162,7 +155,7 @@
       </div>
 
       <div class="product-card">
-        <a href="#" class="product-link">
+        <a href="product.html" class="product-link" aria-label="View product">
           <div class="image-wrap">
             <img src="images/necklace_1.png" alt="Sapphire Ring" />
             <div class="overlay" aria-hidden="true">
@@ -184,15 +177,16 @@
   </footer>
 
   <script>
-    // Click-to-expand search
+    // Optional click-to-expand search (only if icon exists)
     const searchIcon = document.querySelector('.nav-search-icon');
     const searchInput = document.querySelector('.nav-search-bar');
-
-    searchIcon.addEventListener('click', () => {
-      searchIcon.style.display = 'none';
-      searchInput.style.display = 'block';
-      searchInput.focus();
-    });
+    if (searchIcon && searchInput) {
+      searchIcon.addEventListener('click', () => {
+        searchIcon.style.display = 'none';
+        searchInput.style.display = 'block';
+        searchInput.focus();
+      });
+    }
   </script>
 </body>
 
