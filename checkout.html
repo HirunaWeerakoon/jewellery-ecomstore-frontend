@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Boutique - Checkout</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="nav site-nav">
+            <div class="nav-left">
+                <a href="#" class="nav-link">New In</a>
+                <a href="#" class="nav-link">Jewellery</a>
+                <a href="#" class="nav-link">Celebrity</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+            <a href="#" class="brand">ASHADI</a>
+            <div class="nav-right">
+                <a href="#" aria-label="Account" class="icon-link">&#9675;</a>
+                <a href="#" aria-label="Search" class="icon-link">&#9906;</a>
+                <a href="#" aria-label="Bag" class="icon-link">&#128717;</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="checkout-page">
+        <h1 class="checkout-title">Checkout</h1>
+
+        <form class="checkout-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="payment-slip">Upload Payment Slip</label>
+            <input type="file" id="payment-slip" name="payment-slip" accept="image/*,application/pdf" required>
+
+            <button type="submit" class="btn-continue">Continue</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2025 Luxury Boutique. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
