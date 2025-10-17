@@ -18,7 +18,7 @@
             </div>
             <a href="index.html" class="brand">ASHADI</a>
             <div class="nav-right">
-                <a href="checkout.html" class="icon-link">Checkout</a>
+                <img src="images/cart.png" alt="Cart" class="cart-icon" id="cartIcon" />
             </div>
         </nav>
     </header>
@@ -35,12 +35,27 @@
                     Handcrafted in 18K gold with dazzling diamonds, this necklace embodies timeless luxury.
                 </p>
                 <div style="display:flex; gap:12px;">
-                  <a href="checkout.html" class="btn-add-cart" style="text-decoration:none; display:inline-block;">ADD TO CART</a>
-                  <a href="catalog.html" class="nav-filter-btn" style="text-decoration:none; display:inline-block;">Back to Catalog</a>
+                  <button class="btn-add-cart add-to-cart-btn" data-product="Golden Elegance Necklace" data-price="40000">ADD TO CART</button>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Cart Slide-out -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-slide" id="cartSlide">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="cart-close" id="cartClose">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total" id="cartTotal">Total: $0</div>
+            <button class="cart-checkout-btn" id="cartCheckoutBtn">Checkout</button>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -74,6 +89,7 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/product.js"></script>
 </body>
 
 </html>
