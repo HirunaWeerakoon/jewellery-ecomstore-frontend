@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>About — Luxury Boutique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+        /* Small page-specific adjustments to match site theme */
+        .about-container {
+            max-width: 1100px;
+            margin: 32px auto;
+            padding: 0 16px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .about-hero {
+            margin-bottom: 18px;
+            color: var(--muted-700, #4b5563);
+        }
+
+        iframe.map {
+            width: 100%;
+            height: 340px;
+            border: 0;
+            border-radius: 6px;
+        }
+
+        .contact-card {
+            padding: 18px;
+            border-radius: 8px;
+            background: var(--card-bg, #fff);
+            box-shadow: var(--card-shadow, 0 1px 3px rgba(0, 0, 0, .06));
+        }
+
+        .contact-card h3 {
+            margin-top: 0;
+        }
+
+        @media (max-width: 780px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            iframe.map {
+                height: 260px;
+            }
+        }
+
+        /* make nav brand text black */
+        .nav .site-brand {
+            color: #000 !important;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" id="siteHeader">
+        <nav class="nav">
+            <a class="site-brand" href="index.html">HOME</a>
+        </nav>
+    </header>
+
+    <main class="about-container">
+        <h1>About Our Shop</h1>
+
+        <div class="about-grid">
+            <section>
+                <p class="about-hero">Welcome to Luxury Boutique. We offer handcrafted jewellery, bespoke design
+                    services and a
+                    curated collection inspired by classic and modern styles.</p>
+
+                <h2>Location</h2>
+                <p>Our flagship store is located at:</p>
+                <address>
+                    377/2 New Kandy Road,<br />
+                    Kaduwela, Sri Lanka
+                </address>
+
+                <iframe class="map" src="https://www.google.com/maps?q=377/2+New+Kandy+Road,+Kaduwela&output=embed"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                    title="Shop location — 377/2 New Kandy Road, Kaduwela">
+                </iframe>
+
+                <h2>Opening hours</h2>
+                <p>Mon–Fri: 10:00 – 18:00<br />Sat: 10:00 – 16:00<br />Sun: Closed</p>
+            </section>
+
+            <aside class="contact-card" aria-labelledby="contact-heading">
+                <h3 id="contact-heading">Contact & Details</h3>
+
+                <p><strong>Address</strong><br />
+                    377/2 New Kandy Road,<br />
+                    Kaduwela, Sri Lanka</p>
+
+                <p><strong>Telephone</strong><br />
+                    <a href="tel:0112074475">011 207 4475</a>
+                </p>
+
+                <p><strong>Email</strong><br />
+                    <a href="mailto:info@luxuryboutique.example">info@luxuryboutique.example</a>
+                </p>
+
+                <p><strong>Social</strong><br />
+                    Instagram · Facebook · TikTok</p>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">© <span id="year"></span> Luxury Boutique — All rights reserved.</div>
+    </footer>
+
+    <script>
+        // small footer/year script
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>

@@ -13,16 +13,12 @@
     <header class="site-header" id="siteHeader">
         <nav class="nav site-nav">
             <div class="nav-left">
-                <a href="#" class="nav-link">New In</a>
-                <a href="#" class="nav-link">Jewellery</a>
-                <a href="#" class="nav-link">Celebrity</a>
-                <a href="#" class="nav-link">About</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="catalog.html" class="nav-link">Catalog</a>
             </div>
-            <a href="#" class="brand">ASHADI</a>
+            <a href="index.html" class="brand">ASHADI</a>
             <div class="nav-right">
-                <a href="#" aria-label="Account" class="icon-link">&#9675;</a>
-                <a href="#" aria-label="Search" class="icon-link">&#9906;</a>
-                <a href="#" aria-label="Bag" class="icon-link">&#128717;</a>
+                <img src="images/cart.png" alt="Cart" class="cart-icon" id="cartIcon" />
             </div>
         </nav>
     </header>
@@ -38,10 +34,57 @@
                 <p class="product-description">
                     Handcrafted in 18K gold with dazzling diamonds, this necklace embodies timeless luxury.
                 </p>
-                <button class="btn-add-cart">ADD TO CART</button>
+                <div style="display:flex; gap:12px;">
+                    <button class="btn-add-cart add-to-cart-btn" data-product="Golden Elegance Necklace"
+                        data-price="40000">ADD TO CART</button>
+                </div>
             </div>
+
+            <!-- moved review section: now takes full width under image + info -->
+            <section id="review-section">
+                <h3>Customer reviews</h3>
+                <ul id="review-list" style="list-style:none;padding:0;margin:0 0 12px 0">
+                    <li>No reviews yet — be the first to review!</li>
+                </ul>
+
+                <form id="review-form">
+                    <h4>Add your review</h4>
+                    <label>
+                        Rating:
+                        <select id="review-rating" aria-label="rating">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </label>
+                    <div style="margin-top:8px;">
+                        <textarea id="review-comment" placeholder="Write a short review..." rows="4"></textarea>
+                    </div>
+                    <div id="review-error" style="color:crimson;margin-top:8px;display:none;"></div>
+                    <button type="submit" id="review-submit" class="btn-review" style="margin-top:8px;">Submit
+                        review</button>
+                </form>
+            </section>
         </section>
     </main>
+
+    <!-- Cart Slide-out -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-slide" id="cartSlide">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="cart-close" id="cartClose">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be added here dynamically -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total" id="cartTotal">Total: $0</div>
+            <button class="cart-checkout-btn" id="cartCheckoutBtn">Checkout</button>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -75,6 +118,7 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/product.js"></script>
 </body>
 
 </html>
