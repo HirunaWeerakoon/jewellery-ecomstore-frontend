@@ -346,5 +346,124 @@
             }
         });
     }
+
+    // Payment slips management (localStorage fallback)
+    const SLIPS_KEY = 'payment_slips';
+
+    function getSlips() {
+        try {
+            return JSON.parse(localStorage.getItem(SLIPS_KEY) || '[]');
+        } catch (e) {
+            console.warn('failed to parse slips', e);
+            return [];
+        }
+    }
+
+    function saveSlips(slips) {
+        localStorage.setItem(SLIPS_KEY, JSON.stringify(slips));
+    }
+
+    // render slips table into #slipsContainer
+    function renderPaymentSlips() {
+        const container = document.getElementById('slipsContainer');
+        if (!container) return;
+        const slips = getSlips();
+
+        if (!slips.length) {
+            container.innerHTML = '<div class="no-slips">No payment slips submitted yet.</div>';
+            return;
+        }
+
+        let html = '<table class="slips-table" aria-describedby="slips-heading">';
+        html += '<thead><tr><th>Slip</th><th>Details</th><th>Verified</th><th>Download</th></tr></thead><tbody>';
+        slips.forEach(slip => {
+            const verifiedAttr = slip.verified ? 'checked' : '';
+            const safeDate = slip.submittedAt ? new Date(slip.submittedAt).toLocaleString() : '';
+            html += `<tr data-id="${slip.id}">
+          <td><img src="${slip.slipUrl}" alt="payment slip" class="slip-thumb" /></td>
+          <td>
+            <div><strong>Name:</strong> ${escapeHtml(slip.name || '-')}</div>
+            <div><strong>Order:</strong> ${escapeHtml(slip.orderId || '-')}</div>
+            <div><strong>Amount:</strong> ${escapeHtml(slip.amount || '-')}</div>
+            <div><strong>Phone:</strong> ${escapeHtml(slip.phone || '-')}</div>
+            <div><strong>Email:</strong> ${escapeHtml(slip.email || '-')}</div>
+            <div style="margin-top:6px;color:#666;"><small>Submitted: ${safeDate}</small></div>
+          </td>
+          <td style="text-align:center;">
+            <input type="checkbox" class="verify-toggle" ${verifiedAttr} aria-label="Toggle verify" />
+          </td>
+          <td style="text-align:center;">
+            <a href="${slip.slipUrl}" download="slip-${slip.id || ''}" class="download-slip">Download</a>
+          </td>
+        </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+
+    // small HTML escape to avoid injection in this simple admin UI
+    function escapeHtml(str) {
+        if (!str && str !== 0) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // delegated listener for verify toggles and downloads
+    document.addEventListener('click', (ev) => {
+        const toggle = ev.target.closest('.verify-toggle');
+        if (toggle) {
+            const row = toggle.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            const slips = getSlips();
+            const idx = slips.findIndex(s => String(s.id) === String(id));
+            if (idx === -1) return;
+            slips[idx].verified = !!toggle.checked;
+            saveSlips(slips);
+            // optional: visual feedback
+            row.style.opacity = slips[idx].verified ? '0.9' : '1';
+            return;
+        }
+
+        // downloads: default anchor download works; this block is here if you want to support blob handling later
+        const dl = ev.target.closest('.download-slip');
+        if (dl) {
+            // let anchor handle download; nothing to do
+            return;
+        }
+    });
+
+    // expose render function to window for tab switch script to call
+    window.renderPaymentSlips = renderPaymentSlips;
+
+    // ensure slips rendered on admin load if slips tab present
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('slipsContainer')) {
+            renderPaymentSlips();
+        }
+    });
+
+    // helper: add test slip (optional) - uncomment to create sample data
+    /*
+    (function seedSample() {
+      if (getSlips().length) return;
+      const sample = [{
+        id: 's1',
+        name: 'John Doe',
+        orderId: 'ORD-1001',
+        amount: 'Rs. 12,000',
+        phone: '+94 7xx xxx xxx',
+        email: 'john@example.com',
+        slipUrl: 'images/sample-slip.jpg', // can be dataURL or remote URL
+        verified: false,
+        submittedAt: Date.now()
+      }];
+      saveSlips(sample);
+    })();
+    */
 })();
 

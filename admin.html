@@ -3,36 +3,99 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Admin — Luxury Boutique</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/admin.css" />
+    <style>
+        /* small admin-specific styles for slips */
+        .admin-tabs {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .admin-tabs a {
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .admin-tabs a.active {
+            background: #111;
+            color: #fff;
+        }
+
+        .admin-tab {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .admin-tab.active {
+            display: block;
+        }
+
+        .slips-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .slips-table th,
+        .slips-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .slip-thumb {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .verify-toggle {
+            width: 18px;
+            height: 18px;
+        }
+
+        .no-slips {
+            color: #666;
+            padding: 24px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 720px) {
+            .slips-table td:nth-child(2) {
+                display: block;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header class="site-header">
-        <nav class="nav site-nav">
-            <div class="nav-left">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="catalog.html" class="nav-link">Catalog</a>
-            </div>
-            <a href="index.html" class="brand">ASHADI</a>
-            <div class="nav-right">
-                <button id="adminLogoutBtn" class="btn-review">Logout</button>
-            </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="catalog.html" class="nav-link">Catalog</a>
+            <a href="admin.html" class="nav-link">Admin</a>
         </nav>
     </header>
 
-    <main class="admin-page" style="padding:32px 16px;max-width:1000px;margin:0 auto;">
-        <h1 style="margin-bottom:18px;">Admin Panel</h1>
+    <main class="admin-main container">
+        <h1>Admin Panel</h1>
 
-        <div style="display:flex;gap:8px;margin-bottom:18px;">
-            <button class="tab-btn active" data-tab="products">Products</button>
-            <button class="tab-btn" data-tab="categories">Categories</button>
+        <div class="admin-tabs" role="tablist">
+            <a class="tab-link active" data-tab="products">Products</a>
+            <a class="tab-link" data-tab="categories">Categories</a>
+            <a class="tab-link" data-tab="slips">Slips</a> <!-- new tab -->
         </div>
 
-        <!-- PRODUCTS TAB -->
-        <section class="tab-panel" id="tab-products">
+        <!-- existing tabs -->
+        <section id="products" class="admin-tab active">
             <h2>Manage Products</h2>
 
             <form id="addProductForm" class="admin-form">
@@ -63,8 +126,7 @@
             <div id="productsList" class="admin-list" style="margin-top:12px;"></div>
         </section>
 
-        <!-- CATEGORIES TAB -->
-        <section class="tab-panel" id="tab-categories" style="display:none;">
+        <section id="categories" class="admin-tab">
             <h2>Manage Categories</h2>
 
             <form id="addCategoryForm" class="admin-form">
@@ -83,9 +145,39 @@
 
             <div id="categoriesList" class="admin-list" style="margin-top:12px;"></div>
         </section>
+
+        <!-- New Slips tab -->
+        <section id="slips" class="admin-tab" aria-labelledby="slips-heading">
+            <h2 id="slips-heading">Payment Slips</h2>
+
+            <div id="slipsContainer">
+                <!-- table injected by JS -->
+            </div>
+        </section>
     </main>
 
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2025 Luxury Boutique. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="js/admin.js"></script>
+    <script>
+        // simple tab switching (works with existing admin.js logic too)
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                link.classList.add('active');
+                const tab = document.getElementById(link.dataset.tab);
+                if (tab) tab.classList.add('active');
+
+                // If switched to slips, trigger render (admin.js also does this on load)
+                if (link.dataset.tab === 'slips' && window.renderPaymentSlips) window.renderPaymentSlips();
+            });
+        });
+    </script>
 </body>
 
 </html>

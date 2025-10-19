@@ -4,6 +4,11 @@
   --ink: #111111;
   --muted: #6b7280;
   --gap: 24px;
+  --accent: #111827;
+  --card-bg: #ffffff;
+  --surface: #f8fafc;
+  --radius: 10px;
+  --shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
 }
 
 * {
@@ -1503,5 +1508,300 @@ body {
     transform: none;
     pointer-events: auto;
     margin: 0 auto;
+  }
+}
+
+/* --- Admin panel styles (inspired by checkout theme) --- */
+:root {
+  --muted: #6b7280;
+  --accent: #111827;
+  --card-bg: #ffffff;
+  --surface: #f8fafc;
+  --radius: 10px;
+  --shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+/* Admin container */
+.admin-main.container {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(250, 250, 250, 0.6));
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab-link {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all .18s ease;
+}
+
+.tab-link:hover {
+  transform: translateY(-1px);
+}
+
+.tab-link.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
+}
+
+/* Panels */
+.tab-panel,
+.admin-tab {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* Product / Category items */
+.admin-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(250, 250, 250, 0.5));
+  margin-bottom: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+.admin-item img {
+  width: 84px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.admin-item .meta {
+  flex: 1;
+}
+
+.admin-item .actions {
+  margin-left: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* small buttons */
+.btn-small {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-small.btn-delete {
+  background: linear-gradient(90deg, #fff, #fff);
+  border-color: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+}
+
+/* Slips table */
+.slips-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.slips-table th,
+.slips-table td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+  vertical-align: middle;
+  font-size: 14px;
+  color: #222;
+}
+
+.slips-table thead th {
+  color: var(--muted);
+  font-weight: 700;
+  background: transparent;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Slip thumbnail */
+.slip-thumb {
+  width: 140px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* verify toggle & download link */
+.verify-toggle {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.download-slip {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #111827, #111827);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Empty state */
+.no-slips {
+  padding: 22px;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  border: 1px dashed rgba(15, 23, 42, 0.04);
+}
+
+/* Responsive */
+@media (max-width:880px) {
+  .admin-item {
+    flex-direction: row;
+  }
+
+  .slips-table thead {
+    display: none;
+  }
+
+  .slips-table tr {
+    display: block;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+  }
+
+  .slips-table td {
+    display: block;
+    border-bottom: none;
+    padding: 8px 12px;
+  }
+
+  .slips-table td:nth-child(1) {
+    margin-bottom: 8px;
+  }
+
+  .download-slip {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+  }
+}
+
+/* small polish */
+.admin-main h1 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+}
+
+.admin-main h2 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Stack admin form fields vertically (labels above inputs) */
+.admin-tab form,
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-field,
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.admin-field label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Make inputs full width and consistent */
+.admin-field input[type="text"],
+.admin-field input[type="file"],
+.admin-field input[type="number"],
+.admin-field input[type="email"],
+.admin-field textarea,
+.admin-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 14px;
+  box-shadow: none;
+}
+
+/* Image preview inside a field (if you use <img class="image-preview">) */
+.admin-field .image-preview {
+  display: block;
+  max-width: 320px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Buttons row should remain aligned to the right if needed */
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+/* Responsive: ensure stacked layout on narrow screens */
+@media (max-width: 880px) {
+
+  .admin-field,
+  .form-row {
+    width: 100%;
+  }
+
+  .admin-actions {
+    justify-content: stretch;
+    flex-direction: column;
+    align-items: stretch;
   }
 }
