@@ -8,7 +8,7 @@ class CatalogManager {
         this.totalPages = 0;
         this.selectedCategory = null;
         this.searchTerm = '';
-        
+
         // API Configuration - Update these URLs to match your backend
         this.apiConfig = {
             baseUrl: 'http://localhost:3000/api', // Update with your backend URL
@@ -18,16 +18,16 @@ class CatalogManager {
                 productsByCategory: '/products/category'
             }
         };
-        
+
         this.init();
     }
-    
+
     init() {
         this.getSelectedCategory();
         this.bindEvents();
         this.loadProducts();
     }
-    
+
     getSelectedCategory() {
         // Get category from localStorage (set by homepage category clicks)
         this.selectedCategory = localStorage.getItem('selectedCategory');
@@ -36,7 +36,7 @@ class CatalogManager {
             localStorage.removeItem('selectedCategory');
         }
     }
-    
+
     bindEvents() {
         // Search functionality
         const searchInput = document.querySelector('.nav-search-bar');
@@ -46,7 +46,7 @@ class CatalogManager {
                 this.filterProducts();
             });
         }
-        
+
         // Category filter (if exists)
         const categoryFilter = document.getElementById('categoryFilter');
         if (categoryFilter) {
@@ -56,7 +56,7 @@ class CatalogManager {
             });
         }
     }
-    
+
     // API Helper Methods
     async apiRequest(url, options = {}) {
         try {
@@ -67,11 +67,11 @@ class CatalogManager {
                 },
                 ...options
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             return await response.json();
         } catch (error) {
             console.error('API Request failed:', error);
@@ -79,16 +79,16 @@ class CatalogManager {
             return this.getMockData(url);
         }
     }
-    
+
     async loadProducts() {
         try {
             this.showLoading();
-            
+
             let url = this.apiConfig.endpoints.products;
             if (this.selectedCategory) {
                 url = `${this.apiConfig.endpoints.productsByCategory}/${this.selectedCategory}`;
             }
-            
+
             const data = await this.apiRequest(url);
             this.products = data.products || data; // Handle different response formats
             this.filterProducts();
@@ -97,26 +97,26 @@ class CatalogManager {
             this.loadMockProducts();
         }
     }
-    
+
     filterProducts() {
         this.filteredProducts = this.products.filter(product => {
-            const matchesSearch = !this.searchTerm || 
+            const matchesSearch = !this.searchTerm ||
                 product.name.toLowerCase().includes(this.searchTerm) ||
                 product.description.toLowerCase().includes(this.searchTerm);
-            
-            const matchesCategory = !this.selectedCategory || 
+
+            const matchesCategory = !this.selectedCategory ||
                 product.category === this.selectedCategory;
-            
+
             return matchesSearch && matchesCategory;
         });
-        
+
         this.renderProducts();
     }
-    
+
     renderProducts() {
         const productGrid = document.querySelector('.product-grid');
         if (!productGrid) return;
-        
+
         if (this.filteredProducts.length === 0) {
             productGrid.innerHTML = `
                 <div class="empty-catalog">
@@ -126,7 +126,7 @@ class CatalogManager {
             `;
             return;
         }
-        
+
         productGrid.innerHTML = this.filteredProducts.map(product => `
             <div class="product-card">
                 <a href="product.html?id=${product.id}" class="product-link" aria-label="View product">
@@ -141,7 +141,7 @@ class CatalogManager {
             </div>
         `).join('');
     }
-    
+
     showLoading() {
         const productGrid = document.querySelector('.product-grid');
         if (productGrid) {
@@ -153,7 +153,7 @@ class CatalogManager {
             `;
         }
     }
-    
+
     // Mock data for development (remove when backend is ready)
     getMockData(url) {
         if (url.includes('/products')) {
@@ -212,7 +212,7 @@ class CatalogManager {
         }
         return { products: [] };
     }
-    
+
     loadMockProducts() {
         const mockData = this.getMockData('/products');
         this.products = mockData.products;
@@ -227,4 +227,83 @@ document.addEventListener('DOMContentLoaded', () => {
         window.catalogManager = new CatalogManager();
     }
 });
+
+// --- Robust shared products loader: merges local-products and listens for updates ---
+(async function loadSharedProducts() {
+    async function loadAndRender() {
+        console.log('[catalog] loadAndRender start');
+        let products = [];
+        try {
+            const res = await fetch('data/products.json');
+            if (res.ok) {
+                products = await res.json();
+                console.log('[catalog] loaded data/products.json, count=', products.length);
+            } else {
+                console.warn('[catalog] data/products.json not found, status=', res.status);
+            }
+        } catch (err) {
+            console.warn('[catalog] failed to fetch data/products.json', err);
+        }
+
+        // merge local admin products (local-products) on top
+        const localRaw = localStorage.getItem('local-products');
+        let local = [];
+        try { local = localRaw ? JSON.parse(localRaw) : []; } catch (e) { local = []; console.warn('[catalog] failed to parse local-products', e); }
+        console.log('[catalog] local-products count=', local.length);
+
+        const merged = [...local, ...products];
+        console.log('[catalog] merged products count=', merged.length);
+
+        // If CatalogManager is running on the page, give it the merged products so it can filter/render correctly
+        if (window.catalogManager && typeof window.catalogManager.filterProducts === 'function') {
+            try {
+                window.catalogManager.products = merged;
+                window.catalogManager.filterProducts();
+                return;
+            } catch (e) {
+                console.warn('[catalog] failed to hand data to CatalogManager, falling back to DOM render', e);
+            }
+        }
+
+        // Fallback renderer into common container selectors (support .product-grid too)
+        const container = document.getElementById('catalogGrid') || document.querySelector('.catalog-grid') || document.querySelector('.product-grid');
+        if (!container) {
+            console.warn('No catalog render target found. Add #catalogGrid, .catalog-grid or .product-grid to your catalog.html.');
+            return;
+        }
+
+        container.innerHTML = '';
+        merged.forEach(p => {
+            const card = document.createElement('article');
+            card.className = 'product-card';
+            const catLabel = p.category && p.category.name ? `<div class="product-category">${p.category.name}</div>` : '';
+            card.innerHTML = `
+        <a href="product.html?id=${encodeURIComponent(p.id)}" class="product-link">
+          <img src="${p.image || 'images/placeholder.png'}" alt="${p.title}" class="product-thumb" />
+          <h3 class="product-title">${p.title}</h3>
+          ${catLabel}
+          <div class="product-price">LKR ${Number(p.price).toLocaleString()}</div>
+        </a>
+      `;
+            container.appendChild(card);
+        });
+    }
+
+    // initial
+    await loadAndRender();
+
+    // reload when admin signals update in the same tab
+    window.addEventListener('localProductsUpdated', () => {
+        console.log('[catalog] received localProductsUpdated event');
+        loadAndRender();
+    });
+
+    // reload when localStorage changes from another tab (cross-tab)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'local-products') {
+            console.log('[catalog] storage event: local-products changed');
+            loadAndRender();
+        }
+    });
+})();
 

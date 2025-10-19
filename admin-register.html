@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Registration — Luxury Boutique</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="nav site-nav">
+            <div class="nav-left">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="catalog.html" class="nav-link">Catalog</a>
+            </div>
+            <a href="index.html" class="brand">ASHADI</a>
+        </nav>
+    </header>
+
+    <main style="max-width:720px;margin:48px auto;padding:0 16px;">
+        <h1>Admin Registration</h1>
+        <p>Create an admin account to access the admin panel.</p>
+
+        <form id="adminRegisterForm" style="margin-top:16px;">
+            <label>Email</label><br />
+            <input id="regEmail" type="email" required /><br />
+            <label style="margin-top:8px;">Password</label><br />
+            <input id="regPassword" type="password" required /><br />
+            <button type="submit" class="btn-review" style="margin-top:12px;">Register</button>
+        </form>
+
+        <p style="margin-top:12px;color:#666;font-size:14px;">
+            Already registered? <a href="admin.html">Login to Admin Panel</a>
+        </p>
+    </main>
+
+    <script src="js/admin-register.js"></script>
+</body>
+
+</html>

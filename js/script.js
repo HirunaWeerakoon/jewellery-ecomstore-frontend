@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cart functionality
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
+
   const cartIcon = document.getElementById('cartIcon');
   const cartSlide = document.getElementById('cartSlide');
   const cartOverlay = document.getElementById('cartOverlay');
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add to cart
   const addToCart = (productName, price, imageSrc = 'images/necklace_1.png') => {
     const existingItem = cart.find(item => item.name === productName);
-    
+
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         image: imageSrc
       });
     }
-    
+
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartDisplay();
-    
+
     // Show success animation
     const btn = event.target;
     const originalText = btn.textContent;
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update cart display
   const updateCartDisplay = () => {
     if (!cartItems) return;
-    
+
     if (cart.length === 0) {
       cartItems.innerHTML = '<div class="empty-cart"><p>Your cart is empty</p></div>';
       cartTotal.textContent = 'Total: $0';
@@ -121,17 +121,56 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="cart-item-remove" onclick="removeFromCart('${item.name}')">&times;</button>
         </div>
       `).join('');
-      
+
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       cartTotal.textContent = `Total: $${total.toFixed(2)}`;
     }
   };
 
+  // Generic cart handling so it works on any page (catalog, product, index, ...)
+  const CART_OPEN_CLASS = 'cart-open';
+  const body = document.body;
+  const cartPanel = document.querySelector('.cart-panel'); // optional panel element
+
+  function setCartOpen(open) {
+    if (cartPanel) {
+      cartPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    body.classList.toggle(CART_OPEN_CLASS, !!open);
+  }
+
+  // Attach direct listeners to any existing toggles
+  document.querySelectorAll('.cart-toggle, [data-action="toggle-cart"]').forEach(el => {
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      setCartOpen(!body.classList.contains(CART_OPEN_CLASS));
+    });
+  });
+
+  // Delegated listener - covers dynamically added icons and icons on any page
+  document.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.cart-toggle, [data-action="open-cart"], [data-action="toggle-cart"]');
+    if (!btn) return;
+    ev.preventDefault();
+    if (btn.matches('[data-action="open-cart"]')) {
+      setCartOpen(true);
+    } else if (btn.matches('[data-action="close-cart"]')) {
+      setCartOpen(false);
+    } else {
+      setCartOpen(!body.classList.contains(CART_OPEN_CLASS));
+    }
+  });
+
+  // Close cart on Escape
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape') setCartOpen(false);
+  });
+
   // Event listeners
   cartIcon?.addEventListener('click', openCart);
   cartClose?.addEventListener('click', closeCart);
   cartOverlay?.addEventListener('click', closeCart);
-  
+
   cartCheckoutBtn?.addEventListener('click', () => {
     if (cart.length > 0) {
       window.location.href = 'checkout.html';

@@ -9,6 +9,130 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- page-specific nav blur to match about page -->
+  <style>
+    /* sticky translucent blur header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    /* ensure brand text matches about page */
+    .nav .site-brand {
+      color: #000 !important;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* Small page-specific adjustments to match site theme */
+    .about-container {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .about-hero {
+      margin-bottom: 18px;
+      color: var(--muted-700, #4b5563);
+    }
+
+    iframe.map {
+      width: 100%;
+      height: 340px;
+      border: 0;
+      border-radius: 6px;
+    }
+
+    .contact-card {
+      padding: 18px;
+      border-radius: 8px;
+      background: var(--card-bg, #fff);
+      box-shadow: var(--card-shadow, 0 1px 3px rgba(0, 0, 0, .06));
+    }
+
+    .contact-card h3 {
+      margin-top: 0;
+    }
+
+    @media (max-width: 780px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      iframe.map {
+        height: 260px;
+      }
+    }
+
+    /* make nav brand text black */
+    .nav .site-brand {
+      color: #000 !important;
+      text-decoration: none;
+    }
+
+    /* make special-card anchor act like the card and keep label on one line */
+    a.special-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    a.special-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    a.special-card .label {
+      display: inline-block;
+      white-space: nowrap;
+      /* keep text on one line */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 10px 12px;
+      font-weight: 600;
+    }
+
+    /* ensure card is positioned so label can sit above background */
+    .special-card.custom {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* hide the inline <img> element (prevents the browser showing the broken image / alt text) */
+    a.special-card.custom img {
+      display: none !important;
+    }
+
+    /* keep the white label visible and positioned on one line */
+    a.special-card.custom .label {
+      display: inline-block !important;
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      color: #fff !important;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 
 <body>
@@ -17,9 +141,7 @@
     <nav class="nav home-nav">
       <div class="nav-left">
         <a href="catalog.html" class="nav-link" aria-label="Go to catalog">Shop</a>
-        <a href="#" class="nav-link">Jewellery</a>
-        <a href="#" class="nav-link">Celebrity</a>
-        <a href="#" class="nav-link">About</a>
+        <a href="about.html" class="nav-link">About</a>
       </div>
       <a href="index.html" class="brand" aria-label="Go to home">ASHADI</a>
       <div class="nav-right">
@@ -34,14 +156,14 @@
       <div class="hero-overlay">
         <h1 class="hero-title">BRIDAL COLLECTION</h1>
         <div style="margin: 16px 0 56px;">
-          <a href="catalog.html" class="nav-filter-btn" style="text-decoration:none;">Shop Now</a>
         </div>
       </div>
     </section>
 
     <section class="reviews" aria-labelledby="reviews-title">
       <h2 id="reviews-title" class="sr-only">Reviews</h2>
-      <blockquote class="quote">“Demi-fine jewelry label blends clean lines with an innate feel for the body.”</blockquote>
+      <blockquote class="quote">“Demi-fine jewelry label blends clean lines with an innate feel for the body.”
+      </blockquote>
       <div class="stars" aria-label="5 out of 5 stars">
         <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
       </div>
@@ -91,9 +213,11 @@
       </div>
     </section>
     <section class="special-collection">
-      <div class="special-card custom">
-        <span class="label">Custom Jewelery</span>
-      </div>
+      <a href="https://wa.me/message/BIE7M2TX6DVCH1?src=qr" target="_blank" rel="noopener noreferrer"
+        class="special-card custom">
+        <img src="images/custom.png" alt="Custom Jewellery" />
+        <span class="label">Custom Jewellery</span>
+      </a>
       <div class="special-card bridal">
         <span class="label">Bridal Collection</span>
       </div>
@@ -132,10 +256,12 @@
 
     <div class="footer-bottom">
       <p>© 2025 Luxury Boutique. All rights reserved.</p>
+      <small><a href="admin-register.html" style="color:#777; text-decoration:none; margin-left:12px;">Admin</a></small>
     </div>
   </footer>
 
   <script src="js/script.js"></script>
+  <script src="js/load-categories.js"></script>
 </body>
 
 </html>

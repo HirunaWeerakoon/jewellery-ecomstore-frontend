@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Golden Elegance Necklace",
+        "price": 40000,
+        "description": "Handcrafted in 18K gold with dazzling diamonds, this necklace embodies timeless luxury.",
+        "image": "images/necklace_1.png",
+        "slug": "golden-elegance-necklace"
+    },
+    {
+        "id": 2,
+        "title": "Pearl Circle Bracelet",
+        "price": 12000,
+        "description": "Classic pearl bracelet for elegant evenings.",
+        "image": "images/necklace_3.png",
+        "slug": "pearl-circle-bracelet"
+    },
+    {
+        "id": 3,
+        "title": "Minimal Gold Ring",
+        "price": 8000,
+        "description": "Sleek, minimalist gold ring for everyday wear.",
+        "image": "images/ring_1.png",
+        "slug": "minimal-gold-ring"
+    }
+]
